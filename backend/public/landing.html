@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ListIQ — Intelligence for IPO</title>
+    <link rel="stylesheet" href="landing.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="landing-wrapper">
+        <div class="hero" id="hero">
+
+            <!-- Brand row -->
+            <div class="brand-row">
+                <img src="/images/logo.png" alt="ListIQ logo" class="hero-logo">
+                <div class="hero-brand">ListIQ</div>
+                <div class="hero-divider"></div>
+                <div class="hero-tagline"><em>Where data meets conviction</em></div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="hero-buttons">
+                <button class="glass-btn" onclick="window.location.href='/auth?mode=signup'">
+                    <img src="/images/Sign up.png" alt="Sign up">
+                </button>
+                <button class="glass-btn" onclick="window.location.href='/auth?mode=login'">
+                    <img src="/images/Log in.png" alt="Log in">
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Feature highlights -->
+    <div class="features-bar" id="features-bar">
+    <img src="/images/Feature Highlights.png" alt="Features" class="features-img">
+</div>
+
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('hero').classList.add('animate-in');
+                document.getElementById('features-bar').classList.add('animate-in');
+            }, 100);
+        });
+    </script>
+</body>
+</html>

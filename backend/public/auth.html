@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ListIQ — Sign in</title>
+    <link rel="stylesheet" href="landing.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="landing-wrapper">
+        <div class="auth-box" id="auth-box">
+
+            <div class="auth-brand">
+                <img src="/images/logo.png" alt="ListIQ" class="auth-logo">
+                <span class="auth-brand-name">ListIQ</span>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div id="form-login" class="auth-form">
+                <h2 class="auth-title">Welcome back</h2>
+                <p class="auth-sub">Sign in to your account</p>
+                <div class="auth-error hidden" id="login-error"></div>
+                <label>Email</label>
+                <input type="email" id="login-email" placeholder="you@example.com">
+                <label>Password</label>
+                <input type="password" id="login-password" placeholder="••••••••">
+                <button class="auth-submit-btn" onclick="handleLogin()">Sign in →</button>
+                </button>
+                <p class="auth-switch">Don't have an account? <a onclick="switchForm('signup')">Sign up</a></p>
+            </div>
+
+            <!-- SIGNUP FORM -->
+            <div id="form-signup" class="auth-form hidden">
+                <h2 class="auth-title">Create account</h2>
+                <p class="auth-sub">Start predicting IPO gains</p>
+                <div class="auth-error hidden" id="signup-error"></div>
+                <label>Email</label>
+                <input type="email" id="signup-email" placeholder="you@example.com">
+                <label>Password</label>
+                <input type="password" id="signup-password" placeholder="••••••••">
+                <label>Confirm password</label>
+                <input type="password" id="signup-confirm" placeholder="••••••••">
+                <button class="auth-submit-btn" onclick="handleSignup()">Create account →</button>
+                <p class="auth-switch">Already have an account? <a onclick="switchForm('login')">Sign in</a></p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Check URL param to show correct form
+        const params = new URLSearchParams(window.location.search);
+        const mode = params.get('mode') || 'login';
+        if (mode === 'signup') switchForm('signup');
+
+        setTimeout(() => {
+            document.getElementById('auth-box').classList.add('animate-in');
+        }, 100);
+
+        function switchForm(type) {
+            document.getElementById('form-login').classList.toggle('hidden', type !== 'login');
+            document.getElementById('form-signup').classList.toggle('hidden', type !== 'signup');
+        }
+
+        async function handleLogin() {
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const errEl = document.getElementById('login-error');
+            errEl.classList.add('hidden');
+
+            if (!email || !password) {
+                errEl.textContent = 'Please fill in all fields.';
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    errEl.textContent = data.error || 'Login failed.';
+                    errEl.classList.remove('hidden');
+                    return;
+                }
+                localStorage.setItem('listiq_user', JSON.stringify(data.user));
+                window.location.href = '/app';
+            } catch (err) {
+                errEl.textContent = 'Something went wrong. Try again.';
+                errEl.classList.remove('hidden');
+            }
+        }
+
+        async function handleSignup() {
+            const email = document.getElementById('signup-email').value.trim();
+            const password = document.getElementById('signup-password').value;
+            const confirm_password = document.getElementById('signup-confirm').value;
+            const errEl = document.getElementById('signup-error');
+            errEl.classList.add('hidden');
+
+            if (!email || !password || !confirm_password) {
+                errEl.textContent = 'Please fill in all fields.';
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, confirm_password })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    errEl.textContent = data.error || 'Signup failed.';
+                    errEl.classList.remove('hidden');
+                    return;
+                }
+                localStorage.setItem('listiq_user', JSON.stringify(data.user));
+                window.location.href = '/app';
+            } catch (err) {
+                errEl.textContent = 'Something went wrong. Try again.';
+                errEl.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,325 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    min-height: 100vh;
+    background-image: url('/images/bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-color: #0a0f1a;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.landing-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* ── Hero ── */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    margin-top:30px;
+}
+
+.hero.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Brand row ── */
+.brand-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 60px;
+}
+
+.hero-logo {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+.hero-brand {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 64px;
+    font-weight: 400;
+    color: #ffffff;
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 40px rgba(126, 184, 212, 0.6),
+                 0 4px 24px rgba(0, 0, 0, 0.8),
+                 0 0 80px rgba(126, 184, 212, 0.3);
+}
+
+.hero-divider {
+    width: 1px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.hero-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: #B8D9EA;
+    letter-spacing: 0.02em;
+}
+
+/* ── Buttons ── */
+.hero-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 180px
+}
+
+.glass-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: block;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.glass-btn img {
+    width: 280px;
+    height: auto;
+    display: block;
+}
+
+.glass-btn:hover {
+    transform: scale(1.03);
+    filter: brightness(1.15);
+}
+
+.glass-btn:active {
+    transform: scale(0.97);
+}
+
+.btn-bg { display: none; }
+.glass-btn span { display: none; }
+
+/* ── Feature highlights bar ── */
+.features-bar {
+    width: 100%;
+    padding: 18px 0 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 0.5px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s,
+                transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+}
+
+.features-bar.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.features-img {
+    width: 700px;
+    height: auto;
+    object-fit: contain;
+}
+.feature-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.feature-icon-fallback {
+    flex-shrink: 0;
+}
+
+.feature-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.feature-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.feature-sub {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    color: #7EB8D4;
+}
+
+.feature-divider {
+    width: 0.5px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* ── Auth box ── */
+.auth-box {
+    background: rgba(10, 15, 26, 0.7);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 52px 56px;
+    width: 100%;
+    max-width: 480px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.auth-box.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.auth-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.auth-logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.auth-brand-name {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 24px;
+    color: #ffffff;
+    letter-spacing: 0.04em;
+}
+
+.auth-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.auth-sub {
+    font-size: 15px;
+    color: #7EB8D4;
+    margin-bottom: 32px;
+}
+
+.auth-form label {
+    display: block;
+    font-size: 13px;
+    color: #7EB8D4;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+    margin-top: 20px;
+}
+
+.auth-form label:first-of-type { margin-top: 0; }
+
+.auth-form input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 0.5px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 16px;
+    color: #C8DFF0;
+    font-family: 'Space Grotesk', sans-serif;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.auth-form input:focus {
+    border-color: #7EB8D4;
+}
+
+.auth-submit {
+    width: 100%;
+    margin-top: 32px;
+}
+
+.auth-submit img {
+    width: 100%;
+    height: auto;
+}
+
+.auth-switch {
+    text-align: center;
+    font-size: 14px;
+    color: #7EB8D4;
+    margin-top: 22px;
+}
+
+.auth-switch a {
+    color: #B8D9EA;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.auth-error {
+    background: rgba(160, 60, 60, 0.2);
+    border: 0.5px solid rgba(160, 60, 60, 0.4);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #e08080;
+    margin-bottom: 16px;
+}
+
+.hidden { display: none; }
+
+.auth-submit-btn {
+    width: 100%;
+    margin-top: 32px;
+    padding: 16px;
+    background: rgba(126, 184, 212, 0.15);
+    border: 0.5px solid #7EB8D4;
+    border-radius: 50px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.auth-submit-btn:hover {
+    background: rgba(126, 184, 212, 0.28);
+    transform: scale(1.02);
+}
+
+.auth-submit-btn:active {
+    transform: scale(0.98);
+}

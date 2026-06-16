@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ListIQ — Intelligence for IPO</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="brand">
+            <img src="/images/logo.png" alt="ListIQ" class="brand-logo">
+            <div class="brand-name">ListIQ</div>
+        </div>
+        <div class="nav-links">
+            <div class="nav-item active" onclick="showPage('predict', this)">Predict</div>
+            <div class="nav-item" onclick="showPage('analytics', this)">Analytics</div>
+            <div class="nav-item" onclick="showPage('historical', this)">Historical</div>
+            <div class="nav-item" onclick="showPage('model', this)">Model Info</div>
+        </div>
+    </nav>
+
+    <!-- Main -->
+    <main class="main">
+
+        <!-- PREDICT PAGE -->
+        <section id="page-predict" class="page active">
+            <div class="page-header">
+                <h1>Predict listing gain</h1>
+                <p>Enter IPO details to generate a prediction with feature explanation</p>
+            </div>
+            <div class="divider"></div>
+
+            <div class="form-grid">
+                <div class="card">
+                    <div class="card-label">Basic details</div>
+                    <label>Issue price (Rs.)</label>
+                    <input type="number" id="issue_price" value="200">
+                    <label>Issue size (Rs. Cr.)</label>
+                    <input type="number" id="issue_amount_cr" value="500">
+                    <label>Lot size</label>
+                    <input type="number" id="lot_size" value="75">
+                    <label>Category</label>
+                    <select id="is_mainboard">
+                        <option value="1">Mainboard</option>
+                        <option value="0">SME</option>
+                    </select>
+                </div>
+
+                <div class="card">
+                    <div class="card-label">Subscription data</div>
+                    <label>QIB subscription (x)</label>
+                    <input type="number" id="qib_x" value="10" step="0.01">
+                    <label>NII subscription (x)</label>
+                    <input type="number" id="nii_x" value="15" step="0.01">
+                    <label>Retail subscription (x)</label>
+                    <input type="number" id="retail_x" value="8" step="0.01">
+                    <label>Total subscription (x)</label>
+                    <input type="number" id="total_x" value="10" step="0.01">
+                </div>
+
+                <div class="card">
+                    <div class="card-label">Grey market and timing</div>
+                    <label>GMP (Rs.)</label>
+                    <input type="number" id="gmp" value="30">
+                    <label>GMP %</label>
+                    <input type="number" id="gmp_percent" value="15" step="0.01">
+                    <label>Listing month</label>
+                    <select id="listing_month">
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6" selected>June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <label>Listing year</label>
+                    <select id="listing_year">
+                        <option value="2024">2024</option>
+                        <option value="2025" selected>2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn-predict" onclick="predict()">Generate prediction</button>
+
+            <div id="result" class="result hidden">
+                <div class="result-label">Prediction result</div>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-label">Predicted gain</div>
+                        <div class="metric-value" id="pred-gain"></div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Expected price</div>
+                        <div class="metric-value" id="pred-price"></div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Signal</div>
+                        <div id="pred-signal"></div>
+                    </div>
+                </div>
+
+                <div class="shap-section">
+                    <div class="result-label" style="margin-bottom: 14px;">Feature impact</div>
+                    <div id="shap-bars"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ANALYTICS PAGE -->
+        <section id="page-analytics" class="page">
+            <div class="page-header">
+                <h1>Market analytics</h1>
+                <p>Historical IPO performance patterns</p>
+            </div>
+            <div class="divider"></div>
+            <div class="summary-grid" id="analytics-summary"></div>
+            <div class="analytics-charts">
+                <div class="card" id="yearly-chart-container">
+                    <div class="card-label">Year-wise average gain</div>
+                    <div id="yearly-chart"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HISTORICAL PAGE -->
+        <section id="page-historical" class="page">
+            <div class="page-header">
+                <h1>Historical IPO data</h1>
+                <p>Browse past IPOs with subscription and listing performance</p>
+            </div>
+            <div class="divider"></div>
+            <input type="text" id="search-input" placeholder="Search by company name..." oninput="filterTable()">
+            <div class="table-wrapper">
+                <table id="historical-table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Listing date</th>
+                            <th>Issue price</th>
+                            <th>QIB (x)</th>
+                            <th>NII (x)</th>
+                            <th>Retail (x)</th>
+                            <th>GMP %</th>
+                            <th>Gain %</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historical-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- MODEL INFO PAGE -->
+        <section id="page-model" class="page">
+            <div class="page-header">
+                <h1>Model information</h1>
+                <p>How ListIQ works under the hood</p>
+            </div>
+            <div class="divider"></div>
+            <div class="metrics-grid" style="margin-bottom: 36px;">
+                <div class="metric">
+                    <div class="metric-label">Model</div>
+                    <div class="metric-value" style="font-size: 20px;">Random Forest</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">R² score</div>
+                    <div class="metric-value">0.50</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Mean absolute error</div>
+                    <div class="metric-value">16.73%</div>
+                </div>
+            </div>
+            <div class="card" style="max-width: 740px;">
+                <div class="card-label">How it works</div>
+                <p class="model-text">ListIQ predicts the listing day gain percentage for Indian IPOs using historical subscription and grey market data. The dominant signal is grey market premium — GMP accounts for 76% of the model's predictive power. Subscription data (QIB, NII, retail) contributes the remaining signal.</p>
+                <br>
+                <div class="card-label">Data sources</div>
+                <p class="model-text">InvestorGain — subscription and GMP data across 1,380 IPOs from 2019 to 2026. IPOCentral — historical listing performance data.</p>
+                <br>
+                <div class="card-label">Performance</div>
+                <table class="info-table">
+                    <tr><td>R² score</td><td>0.50</td></tr>
+                    <tr><td>MAE</td><td>16.73%</td></tr>
+                    <tr><td>RMSE</td><td>23.96%</td></tr>
+                    <tr><td>Training samples</td><td>128 IPOs</td></tr>
+                    <tr><td>Features</td><td>12</td></tr>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
+
+    <button class="logout-btn" onclick="handleLogout()" title="Log out">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <polyline points="16 17 21 12 16 7"/>
+        <line x1="21" y1="12" x2="9" y2="12"/>
+    </svg>
+    <span class="logout-tooltip">Log out</span>
+</button>
+</body>
+</html>
